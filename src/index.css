@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Space+Grotesk:wght@300..700&family=Inter:wght@100..900&display=swap');
+@import "tailwindcss";
+
+/* --- DEEPSEA OCEAN DOCUMENTARY PORTFOLIO STYLE SYSTEM --- */
+
+:root {
+  /* Colors inspired by natural marine exploration */
+  --bg-sky: #e2f6fc;
+  --bg-teal: #0d7c71;
+  --bg-deep-blue: #0b2540;
+  --bg-navy: #020c1b;
+  --bg-abyss: #01060d;
+  
+  --color-cyan: #3fe2c9;
+  --color-aqua: #a3f3e6;
+  --color-violet: #8b5cf6;
+  --color-teal: #05b1a3;
+  --color-submarine: #facf33; /* Submarine safety yellow */
+  --color-soft-white: #f8fafc;
+  
+  /* HSL variants for translucent control */
+  --hsl-cyan: 171, 74%, 56%;
+  --hsl-navy: 216, 80%, 6%;
+  --hsl-abyss: 216, 86%, 3%;
+  --hsl-submarine: 48, 96%, 59%;
+
+  /* Premium elegant typography */
+  --font-header: 'Outfit', sans-serif;
+  --font-subtitle: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-navy);
+  color: var(--color-soft-white);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-header);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Premium transparent glass navigation bar style */
+.glass-navbar {
+  background: rgba(2, 12, 27, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+  border-radius: 50px;
+}
+
+/* Translucent Premium Discovery Panels */
+.glass-discovery-card {
+  background: rgba(2, 12, 27, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+  border-radius: 16px;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-discovery-card:hover {
+  border-color: rgba(var(--hsl-cyan), 0.3);
+  box-shadow: 0 15px 50px rgba(63, 226, 201, 0.08);
+}
+
+/* --- LIGHTING & UNDERWATER GRAPHIC EFFECTS --- */
+
+/* Volumetric God-ray Sunlight Sweeps */
+.volumetric-godrays {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: linear-gradient(135deg, 
+    rgba(63, 226, 201, 0.08) 0%, 
+    rgba(163, 243, 230, 0.03) 40%, 
+    rgba(0, 0, 0, 0) 100%
+  );
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+/* Seabed Water ripples & light overlays */
+.water-ripples-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: radial-gradient(circle at 50% -20%, rgba(163, 243, 230, 0.1) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* --- ORGANIC MARINE ANIMATIONS --- */
+
+@keyframes water-oscillate {
+  0%, 100% {
+    transform: translateY(0) scaleY(1);
+  }
+  50% {
+    transform: translateY(6px) scaleY(1.02);
+  }
+}
+
+@keyframes creature-swim-slow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg) translateX(0px);
+  }
+  33% {
+    transform: translateY(-8px) rotate(1deg) translateX(5px);
+  }
+  66% {
+    transform: translateY(4px) rotate(-1deg) translateX(-5px);
+  }
+}
+
+@keyframes jellyfish-propel {
+  0%, 100% {
+    transform: translateY(0px) scaleY(1) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) scaleY(1.05) rotate(2deg);
+  }
+}
+
+@keyframes bubble-rise-effect {
+  0% {
+    transform: translateY(110vh) translateX(0) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.5;
+  }
+  90% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-10vh) translateX(25px) scale(0.6);
+    opacity: 0;
+  }
+}
+
+@keyframes spotlight-breath {
+  0%, 100% {
+    opacity: 0.18;
+    transform: scale(0.98) rotate(-0.5deg);
+  }
+  50% {
+    opacity: 0.28;
+    transform: scale(1.02) rotate(0.5deg);
+  }
+}
+
+@keyframes current-drift {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(20px);
+  }
+}
+
+/* Applied Animation Helper Classes */
+
+.anim-waterline {
+  animation: water-oscillate 8s ease-in-out infinite;
+}
+
+.anim-swim-slow {
+  animation: creature-swim-slow 14s ease-in-out infinite;
+}
+
+.anim-jellyfish {
+  animation: jellyfish-propel 9s ease-in-out infinite;
+}
+
+.anim-spotlight {
+  animation: spotlight-breath 6s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+.anim-drift {
+  animation: current-drift 12s ease-in-out infinite;
+}
+
+/* Custom interactive ripple button */
+.btn-marine-cta {
+  background: linear-gradient(135deg, var(--color-teal) 0%, var(--color-cyan) 100%);
+  color: var(--bg-navy);
+  font-family: var(--font-header);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 20px rgba(63, 226, 201, 0.25);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-marine-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(63, 226, 201, 0.45);
+  filter: brightness(1.05);
+}
+
+/* Scroll Indicators */
+.scroll-indicator-dot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--color-cyan);
+  border-radius: 50%;
+  animation: bounce 2s infinite;
+}
+
+/* Glowing Path Timeline components */
+.glowing-timeline-path {
+  background: linear-gradient(to bottom, 
+    var(--color-teal) 0%, 
+    var(--color-cyan) 50%, 
+    var(--color-violet) 100%
+  );
+  box-shadow: 0 0 15px rgba(63, 226, 201, 0.3);
+}
+
+/* World deployment sonar map dots */
+.map-coordinate-dot {
+  box-shadow: 0 0 10px var(--color-cyan);
+  transition: all 0.3s ease;
+}
+
+.map-coordinate-dot:hover {
+  background-color: var(--color-submarine);
+  box-shadow: 0 0 18px var(--color-submarine);
+  transform: scale(1.3);
+}
+
+/* --- VERTICAL SCROLLYTELLING CONTAINER --- */
+.marine-scrollytelling-container {
+  min-height: 100vh;
+  position: relative;
+  z-index: 10;
+}
+
+/* Hide scrollbar defaults */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@media (max-width: 768px) {
+  body {
+    line-height: 1.5;
+  }
+}
