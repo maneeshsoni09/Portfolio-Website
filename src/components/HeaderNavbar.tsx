@@ -35,7 +35,7 @@ export const HeaderNavbar: React.FC<HeaderNavbarProps> = ({ scrollPercentage, ac
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
         {/* GitHub link */}
         <a 
-          href="https://github.com" 
+          href="https://github.com/maneeshsoni09" 
           target="_blank" 
           rel="noreferrer"
           style={{ color: 'rgba(255,255,255,0.7)', transition: 'color 0.3s' }}
