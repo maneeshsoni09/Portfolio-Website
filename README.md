@@ -1,4 +1,4 @@
-Z# Maneesh Soni - Portfolio Website
+# Maneesh Soni - Portfolio Website
 
 A modern and responsive personal portfolio website built using **React, TypeScript, and Vite** to showcase my projects, skills, achievements, and professional experience.
 
