@@ -1,3 +1,93 @@
+Z# Maneesh Soni - Portfolio Website
+
+A modern and responsive personal portfolio website built using **React, TypeScript, and Vite** to showcase my projects, skills, achievements, and professional experience.
+
+## 🚀 About
+
+This portfolio website serves as a digital representation of my work, highlighting my technical expertise, projects, and accomplishments in software development and technology.
+
+## ✨ Features
+
+- Responsive Design
+- Modern UI/UX
+- Project Showcase
+- Skills & Technologies Section
+- Education & Experience
+- Contact Information
+- Fast Performance with Vite
+- Mobile-Friendly Interface
+
+## 🛠️ Tech Stack
+
+- React
+- TypeScript
+- Vite
+- HTML5
+- CSS3
+- JavaScript
+
+## 📂 Project Structure
+
+```text
+src/
+├── components/
+├── assets/
+├── pages/
+├── styles/
+├── App.tsx
+└── main.tsx
+```
+
+## ⚙️ Installation
+
+Clone the repository:
+
+```bash
+git clone <repository-url>
+```
+
+Navigate to the project directory:
+
+```bash
+cd portfolio-website
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the development server:
+
+```bash
+npm run dev
+```
+
+## 📦 Build for Production
+
+```bash
+npm run build
+```
+
+## 🎯 Purpose
+
+This portfolio website is designed to:
+
+- Showcase personal and academic projects
+- Highlight technical skills and expertise
+- Present professional achievements
+- Provide an easy way to connect and collaborate
+
+## 👨‍💻 Author
+
+**Maneesh Soni**
+
+## 📄 License
+
+This project is open-source and available for personal and educational use.
+
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
