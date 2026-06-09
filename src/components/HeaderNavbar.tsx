@@ -1,81 +1,178 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface HeaderNavbarProps {
-  onNavigate: (sectionId: string) => void;
   scrollPercentage: number;
-  activeModal: string | null;
-  setActiveModal: (modalId: string | null) => void;
+  activeLevel: number;
+  onNavigate: (sectionId: string) => void;
+  onGalleryOpen: () => void;
 }
 
-export const HeaderNavbar: React.FC<HeaderNavbarProps> = ({ scrollPercentage, activeModal }) => {
-  const isScrolled = scrollPercentage > 0.05;
+export const HeaderNavbar: React.FC<HeaderNavbarProps> = ({
+  scrollPercentage,
+  activeLevel,
+  onNavigate,
+  onGalleryOpen,
+}) => {
+  const [xp, setXp] = useState(0);
+
+  // Compute XP earned based on scroll progress (up to 15,000 XP)
+  useEffect(() => {
+    const targetXp = Math.floor(scrollPercentage * 15000);
+
+    // Animate XP number incrementing smoothly
+    const startXp = xp;
+    if (startXp === targetXp) return;
+
+    const diff = targetXp - startXp;
+    const duration = 200; // ms
+    const stepTime = 16; // ~60fps
+    const steps = duration / stepTime;
+    const stepValue = diff / steps;
+
+    let currentStep = 0;
+    const timer = setInterval(() => {
+      currentStep++;
+      setXp(prev => {
+        const next = Math.floor(prev + stepValue);
+        if (currentStep >= steps) {
+          clearInterval(timer);
+          return targetXp;
+        }
+        return next;
+      });
+    }, stepTime);
+
+    return () => clearInterval(timer);
+  }, [scrollPercentage]);
+
+  const navItems = [
+    { label: 'HOME', id: 'hero', level: 0 },
+    { label: 'ABOUT', id: 'profile', level: 1 },
+    { label: 'SKILLS', id: 'skills', level: 2 },
+    { label: 'PROJECTS', id: 'projects', level: 3 },
+    { label: 'EXPERIENCE', id: 'experience', level: 4 },
+    { label: 'ACHIEVEMENTS', id: 'achievements', level: 5 },
+    { label: 'CONTACT', id: 'final', level: 6 },
+  ];
 
   return (
-    <header 
+    <header
       style={{
         position: 'fixed',
         top: 0,
         left: 0,
         right: 0,
-        height: '80px',
+        height: '75px',
         zIndex: 50,
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center', // Perfectly centers the social link group
-        padding: '0 50px',
-        background: isScrolled || activeModal ? 'rgba(2, 12, 27, 0.65)' : 'transparent',
-        backdropFilter: isScrolled || activeModal ? 'blur(16px)' : 'none',
-        WebkitBackdropFilter: isScrolled || activeModal ? 'blur(16px)' : 'none',
-        borderBottom: isScrolled || activeModal ? '1px solid rgba(255, 255, 255, 0.06)' : 'none',
-        transition: 'all 0.5s ease',
+        justifyContent: 'space-between',
+        padding: '0 30px',
+        backgroundColor: 'rgba(5, 5, 5, 0.85)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        borderBottom: '1.5px solid rgba(255, 23, 68, 0.2)',
+        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.7)',
       }}
-      className="mobile-header-navbar"
     >
-      {/* Social Media Link Icons centered in Header */}
+      {/* Top Left: Glowing Geometric Logo */}
+      <div
+        onClick={() => onNavigate('hero')}
+        style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}
+        className="group"
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+          {/* Circle */}
+          <svg viewBox="0 0 100 100" style={{ width: '15px', height: '15px' }}>
+            <circle cx="50" cy="50" r="38" stroke="#FF1744" strokeWidth="14" fill="none" />
+          </svg>
+          {/* Triangle */}
+          <svg viewBox="0 0 100 100" style={{ width: '15px', height: '15px' }}>
+            <polygon points="50,12 90,82 10,82" stroke="#FF1744" strokeWidth="14" fill="none" />
+          </svg>
+          {/* Square */}
+          <svg viewBox="0 0 100 100" style={{ width: '15px', height: '15px' }}>
+            <rect x="14" y="14" width="72" height="72" stroke="#FF1744" strokeWidth="14" fill="none" />
+          </svg>
+        </div>
+
+      </div>
+
+      {/* Top Center: Horizontal Menu & Active Underlines */}
+      <nav className="hidden lg:flex items-center gap-8">
+        {navItems.map((item) => {
+          const isActive = activeLevel === item.level;
+          return (
+            <button
+              key={item.id}
+              onClick={() => {
+                onNavigate(item.id);
+              }}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: isActive ? 'var(--accent-red)' : 'var(--text-white)',
+                fontFamily: 'var(--font-accent)',
+                fontSize: '0.75rem',
+                fontWeight: isActive ? 800 : 500,
+                letterSpacing: '2px',
+                cursor: 'pointer',
+                padding: '6px 0',
+                position: 'relative',
+                transition: 'all 0.3s ease',
+              }}
+              className="hover:text-[var(--accent-red)] group"
+            >
+              {item.label}
+              <span
+                style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  width: isActive ? '100%' : '0%',
+                  height: '2px',
+                  backgroundColor: 'var(--accent-red)',
+                  transition: 'width 0.3s ease',
+                }}
+                className="group-hover:w-full"
+              />
+            </button>
+          );
+        })}
+      </nav>
+
+      {/* Top Right: XP counter */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-        {/* GitHub link */}
-        <a 
-          href="https://github.com/maneeshsoni09" 
-          target="_blank" 
-          rel="noreferrer"
-          style={{ color: 'rgba(255,255,255,0.7)', transition: 'color 0.3s' }}
-          onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-cyan)'}
-          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.7)'}
-          title="GitHub Profile"
+        {/* Gallery Button */}
+        <button
+          onClick={onGalleryOpen}
+          style={{
+            background: 'rgba(255, 23, 68, 0.1)',
+            border: '1px solid var(--accent-red)',
+            color: 'var(--text-white)',
+            fontFamily: 'var(--font-heading)',
+            fontSize: '0.75rem',
+            fontWeight: 800,
+            letterSpacing: '1.5px',
+            padding: '6px 14px',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+          }}
+          className="hover:bg-[var(--accent-red)] hover:text-white"
         >
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-          </svg>
-        </a>
+          MY GALLERY
+        </button>
 
-        {/* LinkedIn link */}
-        <a 
-          href="https://linkedin.com/in/maneesh-soni" 
-          target="_blank" 
-          rel="noreferrer"
-          style={{ color: 'rgba(255,255,255,0.7)', transition: 'color 0.3s' }}
-          onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-cyan)'}
-          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.7)'}
-          title="LinkedIn Profile"
-        >
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-          </svg>
-        </a>
-
-        {/* Email link */}
-        <a 
-          href="mailto:maneeshsoni09@gmail.com" 
-          style={{ color: 'rgba(255,255,255,0.7)', transition: 'color 0.3s' }}
-          onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-cyan)'}
-          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.7)'}
-          title="Send Email"
-        >
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-            <polyline points="22,6 12,13 2,6"/>
-          </svg>
-        </a>
+        {/* XP Tracker */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }} className="hidden sm:flex">
+          <span style={{ fontSize: '0.52rem', fontFamily: 'var(--font-accent)', color: 'var(--text-muted)', letterSpacing: '1.5px', textTransform: 'uppercase' }}>
+            SURVIVAL SCORE
+          </span>
+          <span style={{ fontSize: '0.85rem', fontFamily: 'var(--font-heading)', color: 'var(--text-white)', fontWeight: 800 }}>
+            XP <span style={{ color: 'var(--accent-red)' }}>{xp.toLocaleString()}</span>
+          </span>
+        </div>
       </div>
     </header>
   );

@@ -1,26 +1,61 @@
-import { useState, useEffect } from 'react';
-import { ScenicBackground } from './components/ScenicBackground';
+import { useState, useEffect, useRef } from 'react';
 import { DeepSeaCanvas } from './components/DeepSeaCanvas';
 import { HeaderNavbar } from './components/HeaderNavbar';
-import { SurfaceIntro } from './components/sections/SurfaceIntro';
-import { SpecimenPortal } from './components/sections/SpecimenPortal';
+import { Hero } from './components/sections/Hero';
+import { PlayerProfile } from './components/sections/PlayerProfile';
+import { SkillArena } from './components/sections/SkillArena';
+import { ProjectArena } from './components/sections/ProjectArena';
+import { Achievements } from './components/sections/Achievements';
+import { ExperienceArena } from './components/sections/ExperienceArena';
+import { GalleryModal } from './components/GalleryModal';
+
+import { FinalChallenge } from './components/sections/FinalChallenge';
+import { LiveTerminal } from './components/LiveTerminal';
 import { WhaleCursor } from './components/WhaleCursor';
 
 function App() {
   const [scrollPercentage, setScrollPercentage] = useState(0);
-  const [activeModal, setActiveModal] = useState<string | null>(null);
+  const [activeLevel, setActiveLevel] = useState<number>(0);
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
 
-  // Smooth scrollytelling window scroll handler
+  // References to level sections for smooth scrolling and monitoring
+  const heroRef = useRef<HTMLDivElement | null>(null);
+  const profileRef = useRef<HTMLDivElement | null>(null);
+  const skillsRef = useRef<HTMLDivElement | null>(null);
+  const projectsRef = useRef<HTMLDivElement | null>(null);
+  const experienceRef = useRef<HTMLDivElement | null>(null);
+  const achievementsRef = useRef<HTMLDivElement | null>(null);
+  const finalRef = useRef<HTMLDivElement | null>(null);
+
+  // Update scroll progress and active level based on section intersection
   useEffect(() => {
     const handleScroll = () => {
       const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
       if (scrollHeight > 0) {
         setScrollPercentage(window.scrollY / scrollHeight);
       }
+
+      // Check offsets to determine active level
+      const scrollY = window.scrollY + window.innerHeight / 3;
+
+      if (finalRef.current && scrollY >= finalRef.current.offsetTop) {
+        setActiveLevel(6);
+      } else if (achievementsRef.current && scrollY >= achievementsRef.current.offsetTop) {
+        setActiveLevel(5);
+      } else if (experienceRef.current && scrollY >= experienceRef.current.offsetTop) {
+        setActiveLevel(4);
+      } else if (projectsRef.current && scrollY >= projectsRef.current.offsetTop) {
+        setActiveLevel(3);
+      } else if (skillsRef.current && scrollY >= skillsRef.current.offsetTop) {
+        setActiveLevel(2);
+      } else if (profileRef.current && scrollY >= profileRef.current.offsetTop) {
+        setActiveLevel(1);
+      } else {
+        setActiveLevel(0);
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    // Trigger initial calculation
     handleScroll();
 
     return () => {
@@ -28,71 +63,109 @@ function App() {
     };
   }, []);
 
-  // Prevent scroll when modal is active
-  useEffect(() => {
-    if (activeModal) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [activeModal]);
-
-  // Navigate smoothly to target DOM coordinate or open corresponding modal
   const handleNavigate = (sectionId: string) => {
-    if (sectionId === 'about' || sectionId === 'portal') {
-      setActiveModal(null);
-      const targetElement = document.getElementById(sectionId);
-      if (targetElement) {
-        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    } else {
-      // Toggle or set target modal
-      setActiveModal(sectionId);
+    let target: HTMLDivElement | null = null;
+    switch (sectionId) {
+      case 'hero':
+        target = heroRef.current;
+        break;
+      case 'profile':
+        target = profileRef.current;
+        break;
+      case 'skills':
+        target = skillsRef.current;
+        break;
+      case 'projects':
+        target = projectsRef.current;
+        break;
+      case 'experience':
+        target = experienceRef.current;
+        break;
+      case 'achievements':
+        target = achievementsRef.current;
+        break;
+      case 'final':
+        target = finalRef.current;
+        break;
+    }
+
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
+  const handleStartGame = () => {
+    if (profileRef.current) {
+      profileRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+
+
   return (
     <>
-      {/* Adorable spring-physics Whale Follow Cursor */}
-      <WhaleCursor introComplete={true} />
+      {/* Custom Neon Target Reticle Cursor follow */}
+      <WhaleCursor />
 
-      {/* 1. Volumetric God-Rays & Parallax Ocean Gradients */}
-      <ScenicBackground scrollPercentage={scrollPercentage} />
-
-      {/* 2. Custom 2D Canvas for rise-up Bubbles and Mouse-repelled Plankton */}
+      {/* 1. Cybernetic Particle and Grid Canvas background */}
       <DeepSeaCanvas scrollPercentage={scrollPercentage} />
 
-      {/* 3. Immersive Floating Glass Navbar (Pill Design) */}
-      <HeaderNavbar 
-        scrollPercentage={scrollPercentage} 
-        onNavigate={handleNavigate} 
-        activeModal={activeModal}
-        setActiveModal={setActiveModal}
+      {/* 2. HUD Top Control Navbar */}
+      <HeaderNavbar
+        scrollPercentage={scrollPercentage}
+        activeLevel={activeLevel}
+        onNavigate={handleNavigate}
+        onGalleryOpen={() => setIsGalleryOpen(true)}
       />
 
-      {/* 4. Unified Parallax Document Experience */}
+      {/* 4. Sequential Scroll Progression Level Sections */}
       <main className="relative z-10 w-full no-scrollbar overflow-x-hidden">
-        
-        {/* ZONE 01: SURFACE OCEAN [0m] */}
-        <section id="about" className="relative w-full min-h-screen flex items-center justify-center">
-          <SurfaceIntro 
-            onDive={() => handleNavigate('portal')} 
+
+        {/* LEVEL 0: DOCKING ENTRY LANDING */}
+        <div ref={heroRef} id="hero">
+          <Hero
+            onStartGame={handleStartGame}
             onNavigate={handleNavigate}
           />
-        </section>
+        </div>
 
-        {/* ZONE 02: SUBSEA SPECIMEN PORTAL [200m] */}
-        <section id="portal" className="relative w-full min-h-screen py-16 flex items-center justify-center">
-          <SpecimenPortal 
-            activeModal={activeModal}
-            setActiveModal={setActiveModal}
-          />
-        </section>
+        {/* LEVEL 1: PROFILE DOSSIER */}
+        <div ref={profileRef} id="profile" className="game-section-container">
+          <PlayerProfile />
+        </div>
+
+        {/* LEVEL 2: SKILL ARENA TECH DECK */}
+        <div ref={skillsRef} id="skills" className="game-section-container">
+          <SkillArena />
+        </div>
+
+        {/* LEVEL 3: PROJECT CONTENDERS */}
+        <div ref={projectsRef} id="projects" className="game-section-container">
+          <ProjectArena />
+        </div>
+
+        {/* LEVEL 4: EXPERIENCE ARENA */}
+        <div ref={experienceRef} id="experience" className="game-section-container">
+          <ExperienceArena />
+        </div>
+
+        {/* LEVEL 5: ACHIEVEMENTS LEADERBOARD */}
+        <div ref={achievementsRef} id="achievements" className="game-section-container">
+          <Achievements />
+        </div>
+
+        {/* FINAL LEVEL: ELISTMENT CHALLENGE */}
+        <div ref={finalRef} id="final" className="game-section-container">
+          <FinalChallenge />
+        </div>
 
       </main>
+
+      {/* 5. Floating Operator Console Terminal */}
+      <LiveTerminal />
+
+      {/* Credentials Gallery Modal */}
+      <GalleryModal isOpen={isGalleryOpen} onClose={() => setIsGalleryOpen(false)} />
     </>
   );
 }
