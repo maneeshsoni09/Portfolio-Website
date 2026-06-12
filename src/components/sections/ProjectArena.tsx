@@ -32,6 +32,20 @@ export const ProjectArena: React.FC = () => {
     },
     {
       id: 'PROJECT 002',
+      name: 'Bingelyyy',
+      desc: 'Collaborative watchlist platform that helps friends create shared watchlists, vote on movies and shows, track viewing progress, and decide what to watch together in real time.',
+      tech: ['React', 'TypeScript', 'Supabase', 'PostgreSQL', 'Google OAuth', 'TMDB API'],
+      liveUrl: 'https://bingelyyy.vercel.com',
+      githubUrl: 'https://github.com/manesshsoni09/bingelyyy',
+      status: 'LIVE',
+      metrics: 'WATCHLIST SYNC: REAL-TIME // COLLABORATION INDEX: 99.1%',
+      chart: (
+        <path d="M0,20 L10,16 L20,18 L30,10 L40,12 L50,4 L60,8" fill="none" stroke="var(--accent-red)" strokeWidth="2.2" />
+      ),
+      previewImg: '/bingelyyy_preview.png'
+    },
+    {
+      id: 'PROJECT 003',
       name: 'Stealth Interview Assistant',
       desc: 'Speech-to-text context analyzer that extracts and displays interview answers live with minimal latency.',
       tech: ['FastAPI', 'OpenAI APIs', 'Claude Code', 'React', 'WebSockets'],
@@ -44,7 +58,7 @@ export const ProjectArena: React.FC = () => {
       )
     },
     {
-      id: 'PROJECT 003',
+      id: 'PROJECT 004',
       name: 'AI Accent Transformer',
       desc: 'Real-time audio processing mainframe translating speech patterns into adaptive standard accents.',
       tech: ['Python', 'Flask', 'Web Audio API', 'TensorFlow', 'PostgreSQL'],
@@ -57,7 +71,7 @@ export const ProjectArena: React.FC = () => {
       )
     },
     {
-      id: 'PROJECT 004',
+      id: 'PROJECT 005',
       name: 'Smart Handwriting Digitizer',
       desc: 'Optical Character Recognition pipeline converting handwritten assets into clean editable markdown files.',
       tech: ['Python', 'FastAPI', 'SQLAlchemy', 'NLP Models', 'React'],
@@ -86,7 +100,7 @@ export const ProjectArena: React.FC = () => {
     const centerY = rect.height / 2;
     const rotateX = ((y - centerY) / centerY) * 4;
     const rotateY = -((x - centerX) / centerX) * 4;
-    
+
     card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
   };
 
@@ -157,13 +171,13 @@ export const ProjectArena: React.FC = () => {
               <div>
                 {/* Header: Project ID & Status Badge */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-                  <span 
-                    style={{ 
-                      fontSize: '0.6rem', 
-                      fontFamily: 'var(--font-heading)', 
-                      color: 'var(--accent-red)', 
-                      fontWeight: 900, 
-                      letterSpacing: '1px' 
+                  <span
+                    style={{
+                      fontSize: '0.6rem',
+                      fontFamily: 'var(--font-heading)',
+                      color: 'var(--accent-red)',
+                      fontWeight: 900,
+                      letterSpacing: '1px'
                     }}
                   >
                     {project.id}
@@ -171,10 +185,10 @@ export const ProjectArena: React.FC = () => {
 
                   {/* Status Badge */}
                   {isLive ? (
-                    <div 
-                      style={{ 
-                        fontSize: '0.55rem', 
-                        fontFamily: 'var(--font-accent)', 
+                    <div
+                      style={{
+                        fontSize: '0.55rem',
+                        fontFamily: 'var(--font-accent)',
                         color: '#FFFFFF',
                         backgroundColor: 'var(--accent-red)',
                         padding: '2px 6px',
@@ -187,10 +201,10 @@ export const ProjectArena: React.FC = () => {
                       LIVE NOW
                     </div>
                   ) : (
-                    <div 
-                      style={{ 
-                        fontSize: '0.55rem', 
-                        fontFamily: 'var(--font-accent)', 
+                    <div
+                      style={{
+                        fontSize: '0.55rem',
+                        fontFamily: 'var(--font-accent)',
                         color: 'var(--text-muted)',
                         border: '1px solid rgba(255, 255, 255, 0.12)',
                         padding: '2px 6px',
@@ -232,11 +246,11 @@ export const ProjectArena: React.FC = () => {
                 )}
 
                 {/* Name */}
-                <h4 
-                  style={{ 
-                    fontSize: '1.05rem', 
-                    color: 'var(--text-white)', 
-                    fontWeight: 900, 
+                <h4
+                  style={{
+                    fontSize: '1.05rem',
+                    color: 'var(--text-white)',
+                    fontWeight: 900,
                     fontFamily: 'var(--font-heading)',
                     lineHeight: '1.2',
                     marginBottom: '8px',
@@ -252,7 +266,7 @@ export const ProjectArena: React.FC = () => {
                 </p>
 
                 {/* Core Metrics Visual Panel */}
-                <div 
+                <div
                   style={{
                     display: 'flex',
                     justifyContent: 'space-between',
@@ -329,8 +343,8 @@ export const ProjectArena: React.FC = () => {
                       className="hover:border-[var(--accent-red)] hover:bg-neutral-900"
                     >
                       <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <polyline points="4 17 10 11 4 5"/>
-                        <line x1="12" y1="19" x2="20" y2="19"/>
+                        <polyline points="4 17 10 11 4 5" />
+                        <line x1="12" y1="19" x2="20" y2="19" />
                       </svg>
                       <span>GITHUB</span>
                     </a>
@@ -361,15 +375,15 @@ export const ProjectArena: React.FC = () => {
                       className="hover:scale-[1.01]"
                     >
                       <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                        <polyline points="15 3 21 3 21 9"/>
-                        <line x1="10" y1="14" x2="21" y2="3"/>
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                        <polyline points="15 3 21 3 21 9" />
+                        <line x1="10" y1="14" x2="21" y2="3" />
                       </svg>
                       <span>LIVE DEMO</span>
                     </a>
                   </>
                 ) : (
-                  <div 
+                  <div
                     style={{
                       width: '100%',
                       textAlign: 'center',
