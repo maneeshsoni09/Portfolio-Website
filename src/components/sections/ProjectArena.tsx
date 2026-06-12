@@ -35,7 +35,7 @@ export const ProjectArena: React.FC = () => {
       name: 'Bingelyyy',
       desc: 'Collaborative watchlist platform that helps friends create shared watchlists, vote on movies and shows, track viewing progress, and decide what to watch together in real time.',
       tech: ['React', 'TypeScript', 'Supabase', 'PostgreSQL', 'Google OAuth', 'TMDB API'],
-      liveUrl: 'https://bingelyyy.vercel.com',
+      liveUrl: 'https://bingelyyy.vercel.app',
       githubUrl: 'https://github.com/manesshsoni09/bingelyyy',
       status: 'LIVE',
       metrics: 'WATCHLIST SYNC: REAL-TIME // COLLABORATION INDEX: 99.1%',
