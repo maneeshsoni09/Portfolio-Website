@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { DeepSeaCanvas } from './components/DeepSeaCanvas';
 import { HeaderNavbar } from './components/HeaderNavbar';
 import { Hero } from './components/sections/Hero';
@@ -12,11 +13,21 @@ import { GalleryModal } from './components/GalleryModal';
 import { FinalChallenge } from './components/sections/FinalChallenge';
 import { LiveTerminal } from './components/LiveTerminal';
 import { WhaleCursor } from './components/WhaleCursor';
+import { WelcomeModal } from './components/WelcomeModal';
 
 function App() {
   const [scrollPercentage, setScrollPercentage] = useState(0);
   const [activeLevel, setActiveLevel] = useState<number>(0);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(false);
+
+  // Initialize welcome modal check on mount
+  useEffect(() => {
+    const dismissed = sessionStorage.getItem('portfolio_welcome_dismissed');
+    if (dismissed !== 'true') {
+      setShowWelcome(true);
+    }
+  }, []);
 
   // References to level sections for smooth scrolling and monitoring
   const heroRef = useRef<HTMLDivElement | null>(null);
@@ -166,6 +177,13 @@ function App() {
 
       {/* Credentials Gallery Modal */}
       <GalleryModal isOpen={isGalleryOpen} onClose={() => setIsGalleryOpen(false)} />
+
+      {/* Welcome Mascot Modal */}
+      <AnimatePresence>
+        {showWelcome && (
+          <WelcomeModal onClose={() => setShowWelcome(false)} />
+        )}
+      </AnimatePresence>
     </>
   );
 }

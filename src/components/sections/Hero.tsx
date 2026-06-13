@@ -120,7 +120,7 @@ export const Hero: React.FC<HeroProps> = ({
             <span style={{ fontSize: '0.8rem', fontFamily: 'var(--font-accent)', color: 'var(--accent-red)', fontWeight: 800, letterSpacing: '1px' }}>
               AI/ML ENGINEER
             </span>
-            <span style={{ color: 'var(--text-muted)' }}>|</span>
+
 
           </div>
 
