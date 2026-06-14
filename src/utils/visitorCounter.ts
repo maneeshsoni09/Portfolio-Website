@@ -1,31 +1,33 @@
-// CounterAPI V2 Client with automated V1 public fallback
+// CounterAPI Client with V2 Workspace support and automated V1 public fallback
 const V1_API_BASE_URL = 'https://api.counterapi.dev/v1/maneesh_portfolio/visits';
 const V2_API_BASE_URL = 'https://api.counterapi.dev/v2';
 
-const FALLBACK_INITIAL_COUNT = 1247;
+const FALLBACK_INITIAL_COUNT = 0;
 
 interface CounterResponse {
-  count?: number;
+  count?: number; // V1
+  data?: {        // V2
+    up_count?: number;
+    down_count?: number;
+  };
   message?: string;
   code?: number | string;
 }
+
+// Extract count helper for both V1 and V2 responses
+const extractCount = (data: CounterResponse): number => {
+  if (data.data && typeof data.data.up_count === 'number') {
+    return data.data.up_count;
+  }
+  return data.count || 0;
+};
 
 // Retrieve configurations from environment
 const getCounterConfig = () => {
   const apiKey = import.meta.env.VITE_COUNTER_API_KEY || 'ut_pc1e6hQp14fPZrSoevcgzYlMlQioA1ekfhpvvSDQ';
   const workspace = import.meta.env.VITE_COUNTER_WORKSPACE || '';
-  return { apiKey, workspace };
-};
-
-/**
- * Helper to fetch with Bearer Authorization if credentials exist
- */
-const fetchWithAuth = async (url: string, apiKey: string): Promise<Response> => {
-  const headers: Record<string, string> = {};
-  if (apiKey) {
-    headers['Authorization'] = `Bearer ${apiKey}`;
-  }
-  return fetch(url, { headers });
+  const counterName = import.meta.env.VITE_COUNTER_NAME || 'first-counter-4447';
+  return { apiKey, workspace, counterName };
 };
 
 /**
@@ -33,15 +35,16 @@ const fetchWithAuth = async (url: string, apiKey: string): Promise<Response> => 
  * Tries V2 if workspace is provided; otherwise, falls back to the public V1 endpoint.
  */
 export const getVisitorCount = async (): Promise<number> => {
-  const { apiKey, workspace } = getCounterConfig();
+  const { apiKey, workspace, counterName } = getCounterConfig();
 
   if (workspace) {
     try {
-      const url = `${V2_API_BASE_URL}/${workspace}/visits`;
-      const res = await fetchWithAuth(url, apiKey);
+      // Pass token as query parameter to avoid OPTIONS preflight CORS checks
+      const url = `${V2_API_BASE_URL}/${workspace}/${counterName}?token=${apiKey}&cb=${Date.now()}`;
+      const res = await fetch(url);
       if (res.ok) {
         const data: CounterResponse = await res.json();
-        return (data.count || 0) + FALLBACK_INITIAL_COUNT;
+        return extractCount(data) + FALLBACK_INITIAL_COUNT;
       }
       console.warn(`V2 query returned status ${res.status}. Falling back to public V1 counter.`);
     } catch (err) {
@@ -51,10 +54,10 @@ export const getVisitorCount = async (): Promise<number> => {
 
   // V1 Public Fallback
   try {
-    const res = await fetch(`${V1_API_BASE_URL}/`);
+    const res = await fetch(`${V1_API_BASE_URL}/?cb=${Date.now()}`);
     if (!res.ok) throw new Error('V1 CounterAPI fetch failed');
     const data: CounterResponse = await res.json();
-    return (data.count || 0) + FALLBACK_INITIAL_COUNT;
+    return extractCount(data) + FALLBACK_INITIAL_COUNT;
   } catch (err) {
     console.warn('All CounterAPI fetches failed. Reading from local storage:', err);
     return getLocalFallbackCount();
@@ -69,18 +72,19 @@ export const recordUniqueVisit = async (countryName: string, timezone: string): 
   console.log(`[Visitor Registration] Location: ${countryName || 'Unknown'}, Timezone: ${timezone || 'Unknown'}`);
   
   const hasVisited = localStorage.getItem('portfolio_has_visited');
-  const { apiKey, workspace } = getCounterConfig();
+  const { apiKey, workspace, counterName } = getCounterConfig();
 
   if (!hasVisited) {
     // Attempt V2 increment if workspace exists
     if (workspace) {
       try {
-        const url = `${V2_API_BASE_URL}/${workspace}/visits/up`;
-        const res = await fetchWithAuth(url, apiKey);
+        // Pass token as query parameter to avoid OPTIONS preflight CORS checks
+        const url = `${V2_API_BASE_URL}/${workspace}/${counterName}/up?token=${apiKey}`;
+        const res = await fetch(url);
         if (res.ok) {
           const data: CounterResponse = await res.json();
           localStorage.setItem('portfolio_has_visited', 'true');
-          const newCount = (data.count || 0) + FALLBACK_INITIAL_COUNT;
+          const newCount = extractCount(data) + FALLBACK_INITIAL_COUNT;
           localStorage.setItem('portfolio_local_visitor_count', newCount.toString());
           return { success: true, count: newCount };
         }
@@ -92,12 +96,12 @@ export const recordUniqueVisit = async (countryName: string, timezone: string): 
 
     // Public V1 Increment Fallback
     try {
-      const res = await fetch(`${V1_API_BASE_URL}/up/`);
+      const res = await fetch(`${V1_API_BASE_URL}/up`);
       if (!res.ok) throw new Error('V1 CounterAPI increment failed');
       const data: CounterResponse = await res.json();
       
       localStorage.setItem('portfolio_has_visited', 'true');
-      const newCount = (data.count || 0) + FALLBACK_INITIAL_COUNT;
+      const newCount = extractCount(data) + FALLBACK_INITIAL_COUNT;
       localStorage.setItem('portfolio_local_visitor_count', newCount.toString());
       return { success: true, count: newCount };
     } catch (err) {

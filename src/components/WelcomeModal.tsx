@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, RefreshCw, MapPin, Clock, Globe } from 'lucide-react';
 import { Mascot } from './Mascot';
-import { recordUniqueVisit } from '../utils/visitorCounter';
+import { recordUniqueVisit, getVisitorCount } from '../utils/visitorCounter';
 
 interface WelcomeModalProps {
   onClose: () => void;
@@ -41,6 +41,7 @@ export const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
   });
   const [visitorCount, setVisitorCount] = useState(0);
   const [displayedCount, setDisplayedCount] = useState(0);
+  const prevCountRef = useRef(0);
   
   const [greeting, setGreeting] = useState('Welcome ☀️');
   const [welcomeMsg, setWelcomeMsg] = useState('');
@@ -203,14 +204,21 @@ export const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
     return () => clearInterval(clockTimer);
   }, [visitorInfo.timezone]);
 
-  // --- COUNTER TICK-UP ANIMATION FROM 0 ---
+  // --- COUNTER TICK-UP ANIMATION ---
   useEffect(() => {
     if (visitorCount > 0) {
       setLookAtCounter(true);
       setTimeout(() => setLookAtCounter(false), 2500);
 
-      const start = 0;
+      const start = prevCountRef.current;
       const end = visitorCount;
+      prevCountRef.current = visitorCount;
+
+      if (start === end) {
+        setDisplayedCount(end);
+        return;
+      }
+
       setDisplayedCount(start);
 
       const duration = 1600; // ms
@@ -222,7 +230,7 @@ export const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
       const countTimer = setInterval(() => {
         currentStep++;
         const next = Math.floor(start + currentStep * stepVal);
-        if (currentStep >= steps || next >= end) {
+        if (currentStep >= steps || (stepVal > 0 ? next >= end : next <= end)) {
           clearInterval(countTimer);
           setDisplayedCount(end);
         } else {
@@ -233,6 +241,23 @@ export const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
       return () => clearInterval(countTimer);
     }
   }, [visitorCount]);
+
+  // --- REAL-TIME VISITOR COUNT POLLING ---
+  useEffect(() => {
+    // Poll every 3 seconds for live visitor updates
+    const pollInterval = setInterval(async () => {
+      try {
+        const count = await getVisitorCount();
+        if (count > 0) {
+          setVisitorCount(count);
+        }
+      } catch (err) {
+        console.warn('Real-time visitor count update failed:', err);
+      }
+    }, 3000); // 3 seconds for responsive feel
+
+    return () => clearInterval(pollInterval);
+  }, []);
 
   // --- AUTO-DISMISS TIMER (7.5s) ---
   useEffect(() => {
