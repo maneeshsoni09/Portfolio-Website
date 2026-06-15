@@ -81,7 +81,7 @@ This portfolio website is designed to:
 
 ## 👨‍💻 Author
 
-**Maneesh Soni**
+**Maneesh Soni** - [GitHub Profile](https://github.com/maneeshsoni09)
 
 ## 📄 License
 
