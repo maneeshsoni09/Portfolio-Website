@@ -72,9 +72,9 @@ export const LiveTerminal: React.FC = () => {
         break;
       case 'resume':
         reply = 'INITIATING DOWNLOAD PROTOCOL...\n' +
-                'Redirecting packet to: /Maneesh_Soni_Resume.pdf';
+                'Redirecting packet to: Google Drive Resume';
         // Trigger download
-        window.open('/Maneesh_Soni_Resume.pdf', '_blank');
+        window.open('https://drive.google.com/file/d/1sIyCnu6HavHx3OlPb47quLIBa4ItSZPH/view?usp=sharing', '_blank');
         break;
       case 'contact':
         reply = 'SECURE DIRECT DIRECTIVES:\n' +

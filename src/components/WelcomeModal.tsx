@@ -286,6 +286,7 @@ export const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
 
   // --- TILT LOGIC (Poster) ---
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (window.innerWidth < 768) return; // Disable tilt on mobile/touch screens
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -301,11 +302,14 @@ export const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
     setTilt({ x: 0, y: 0 });
   };
 
-
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md px-4 select-none">
-      
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md px-4 select-none"
+    >
       {/* Click Outside Backdrop to Close */}
       <div className="absolute inset-0 z-10" onClick={handleClose} />
 
@@ -332,11 +336,11 @@ export const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
         />
 
         {/* Mascot + Card Composition */}
-        <div className="relative w-full flex items-center justify-end pr-2 md:pr-4">
+        <div className="relative w-full flex items-center justify-center md:justify-end pr-0 md:pr-4">
           
           {/* Mascot peeking / holding poster */}
           <Mascot
-            className="absolute -left-12 md:-left-20 top-1/2 -translate-y-1/2 w-44 md:w-56 h-auto z-20 pointer-events-auto"
+            className="hidden md:block absolute -left-12 md:-left-20 top-1/2 -translate-y-1/2 w-44 md:w-56 h-auto z-20 pointer-events-auto"
             onClickShape={triggerRandomMessage}
             lookAtCounter={lookAtCounter}
           />
@@ -349,13 +353,12 @@ export const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
               transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) translateZ(12px)`,
               transition: 'transform 0.1s ease-out',
               transformStyle: 'preserve-3d',
-              width: '82%',
               backgroundColor: 'rgba(17, 17, 17, 0.7)',
               border: '1.5px solid rgba(255, 23, 68, 0.3)',
               borderRadius: '20px',
               boxShadow: '0 25px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(255, 23, 68, 0.08)'
             }}
-            className="relative min-h-[380px] p-6 md:p-8 flex flex-col justify-between overflow-hidden z-10"
+            className="relative w-full md:w-[82%] min-h-[380px] p-6 md:p-8 flex flex-col justify-between overflow-hidden z-10"
           >
             {/* Small visible close cross icon inside the card */}
             <button
@@ -482,6 +485,6 @@ export const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
         </div>
 
       </motion.div>
-    </div>
+    </motion.div>
   );
 };

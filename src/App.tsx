@@ -105,11 +105,7 @@ function App() {
     }
   };
 
-  const handleStartGame = () => {
-    if (profileRef.current) {
-      profileRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+
 
 
 
@@ -135,7 +131,6 @@ function App() {
         {/* LEVEL 0: DOCKING ENTRY LANDING */}
         <div ref={heroRef} id="hero">
           <Hero
-            onStartGame={handleStartGame}
             onNavigate={handleNavigate}
           />
         </div>

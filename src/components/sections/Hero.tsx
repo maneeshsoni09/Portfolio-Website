@@ -3,12 +3,10 @@ import { motion } from 'framer-motion';
 import maneeshAvatar from '../../assets/maneesh_profile_avatar.png';
 
 interface HeroProps {
-  onStartGame: () => void;
   onNavigate: (sectionId: string) => void;
 }
 
 export const Hero: React.FC<HeroProps> = ({
-  onStartGame,
   onNavigate
 }) => {
 
@@ -138,16 +136,18 @@ export const Hero: React.FC<HeroProps> = ({
           </p>
 
           <div className="flex flex-wrap gap-4 items-center mb-8">
-            <button
-              onClick={onStartGame}
+            <a
+              href="https://drive.google.com/file/d/1sIyCnu6HavHx3OlPb47quLIBa4ItSZPH/view?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-neon-primary flex items-center gap-2 group"
             >
-              <span>ENTER THE GAME</span>
+              <span>VIEW RESUME</span>
               <svg className="w-4 h-4 transform transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                 <line x1="5" y1="12" x2="19" y2="12"></line>
                 <polyline points="12 5 19 12 12 19"></polyline>
               </svg>
-            </button>
+            </a>
           </div>
         </div>
 
