@@ -74,10 +74,14 @@ npm run build
 
 This portfolio website is designed to:
 
-- Showcase personal and academic projects
-- Highlight technical skills and expertise
-- Present professional achievements
-- Provide an easy way to connect and collaborate
+
+- Showcase Personal, Academic, and Professional Projects by demonstrating problem-solving abilities, technical expertise, and real-world application of knowledge.
+- Highlight Technical Skills and Competencies across software development, artificial intelligence, machine learning, web technologies, databases, and modern development tools.
+- Present Professional Achievements and Experiences, including internships, certifications, leadership activities, and notable accomplishments.
+- Demonstrate Continuous Learning and Growth by showcasing ongoing projects, technical interests, and contributions to the developer community.
+- Establish a Strong Professional Presence that reflects my capabilities, passion for technology, and commitment to building impactful solutions.
+- Provide an Accessible Platform for Networking and Collaboration, enabling recruiters, professionals, and fellow developers to connect, communicate, and explore potential opportunities.
+- Serve as a Centralized Hub for my resume, project documentation, technical blogs, contact information, and professional profiles.
 
 ## 👨‍💻 Author
 
