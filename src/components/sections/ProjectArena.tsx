@@ -22,7 +22,7 @@ export const ProjectArena: React.FC = () => {
       desc: 'Intelligent budget compiler that parses transactions and classifies financial records using machine learning algorithms.',
       tech: ['Python', 'FastAPI', 'PostgreSQL', 'Scikit-learn', 'React'],
       liveUrl: 'https://piggyyy.vercel.app/',
-      githubUrl: 'https://github.com/maneeshsoni09/Piggy-Smart-Budgeting-AI',
+      githubUrl: 'https://github.com/maneeshsoni09/piggyyy',
       status: 'LIVE',
       metrics: 'REGRESSOR: XGBoost // LATENCY: 14ms',
       chart: (
@@ -36,7 +36,7 @@ export const ProjectArena: React.FC = () => {
       desc: 'Collaborative watchlist platform that helps friends create shared watchlists, vote on movies and shows, track viewing progress, and decide what to watch together in real time.',
       tech: ['React', 'TypeScript', 'Supabase', 'PostgreSQL', 'Google OAuth', 'TMDB API'],
       liveUrl: 'https://bingelyyy.vercel.app',
-      githubUrl: 'https://github.com/manesshsoni09/bingelyyy',
+      githubUrl: 'https://github.com/maneeshsoni09/Bingelyyy',
       status: 'LIVE',
       metrics: 'WATCHLIST SYNC: REAL-TIME // COLLABORATION INDEX: 99.1%',
       chart: (
